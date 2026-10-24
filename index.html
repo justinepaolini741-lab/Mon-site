@@ -1,151 +1,540 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Justine Paolini | Production de Plateaux Stand-up Premium</title>
-    <!-- Tailwind CSS pour un design moderne haut de gamme -->
-    <script src="https://tailwindcss.com"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paolini Productions | Plateaux de stand-up pour vos événements</title>
+<meta name="description" content="Paolini Productions conçoit des plateaux de stand-up sur mesure pour les entreprises et les événements privés : programmation, régie, accueil des artistes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --noir:#000000;
+    --scene:#15120e;        /* fond des panneaux, brun très sombre */
+    --scene-2:#1f1a14;
+    --ivoire:#efe8d8;       /* texte principal */
+    --ivoire-doux:#b9b0a0;  /* texte secondaire */
+    --or:#c9a35a;           /* or principal */
+    --or-clair:#ead6a1;
+    --or-fonce:#8a6a30;
+    --filet:rgba(201,163,90,.28);
+    --display:"Bodoni Moda", Didot, "Times New Roman", serif;
+    --texte:"Jost", "Futura", system-ui, sans-serif;
+    --largeur:1180px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--noir);color:var(--ivoire);font-family:var(--texte);font-weight:300;font-size:1.0625rem;line-height:1.65;-webkit-font-smoothing:antialiased}
+  img{max-width:100%;display:block}
+  a{color:inherit}
+  :focus-visible{outline:2px solid var(--or-clair);outline-offset:3px}
+  .conteneur{width:min(100% - 32px, var(--largeur));margin-inline:auto}
+
+  /* ---------- Monogramme (remplaçable par ton logo) ---------- */
+  .monogramme{font-family:var(--display);font-style:italic;font-weight:500;letter-spacing:-.12em;
+    background:linear-gradient(160deg,var(--or-clair) 0%,var(--or) 40%,var(--or-fonce) 70%,var(--or-clair) 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;line-height:1}
+
+  /* ---------- En-tête ---------- */
+  header{position:fixed;inset:0 0 auto 0;z-index:20;transition:background .3s}
+  header.opaque{background:rgba(0,0,0,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--filet)}
+  .barre{display:flex;align-items:center;justify-content:space-between;height:76px}
+  .marque{display:flex;align-items:center;gap:14px;text-decoration:none}
+  .marque .monogramme{font-size:2.1rem;padding-right:.15em}
+  .marque span{font-family:var(--display);font-size:1.15rem;letter-spacing:.02em}
+  nav{display:flex;align-items:center;gap:32px;font-size:.95rem}
+  nav a{text-decoration:none;color:var(--ivoire-doux);transition:color .2s}
+  nav a:hover{color:var(--ivoire)}
+  .bouton{display:inline-block;text-decoration:none;font-family:var(--texte);font-weight:500;font-size:1rem;
+    padding:.85em 1.7em;border-radius:999px;border:1px solid var(--or);cursor:pointer;transition:background .2s,color .2s}
+  .bouton-or{background:var(--or);color:var(--noir)}
+  .bouton-or:hover{background:var(--or-clair)}
+  .bouton-ligne{background:transparent;color:var(--ivoire)}
+  .bouton-ligne:hover{background:rgba(201,163,90,.12)}
+  nav .bouton{color:var(--noir);padding:.6em 1.3em;font-size:.92rem}
+  nav .bouton:hover{color:var(--noir)}
+  @media (max-width:760px){ nav a:not(.bouton){display:none} .marque span{display:none} }
+
+  /* ---------- Hero : la scène ---------- */
+  .scene{position:relative;min-height:100svh;display:grid;place-items:center;text-align:center;overflow:hidden;isolation:isolate}
+  /* Emplacement photo/vidéo de fond : ajoute une image dans .scene-fond */
+  .scene-fond{position:absolute;inset:0;z-index:-2;background:var(--noir)}
+  .scene-fond img,.scene-fond video{width:100%;height:100%;object-fit:cover;object-position:center 62%;opacity:.3;filter:sepia(.55) saturate(.7) hue-rotate(-12deg) blur(1px)}
+  /* La poursuite : un cône de lumière qui s'allume au chargement */
+  .poursuite{position:absolute;inset:0;z-index:-1;pointer-events:none;
+    background:
+      radial-gradient(ellipse 34% 62% at 50% 36%, rgba(234,214,161,.22) 0%, rgba(201,163,90,.08) 45%, transparent 72%),
+      conic-gradient(from 180deg at 50% -8%, transparent 168deg, rgba(234,214,161,.10) 176deg, rgba(234,214,161,.16) 180deg, rgba(234,214,161,.10) 184deg, transparent 192deg);
+    opacity:0;animation:allumage 1.8s .3s ease-out forwards}
+  .scene::after{content:"";position:absolute;inset:auto 0 0 0;height:30%;z-index:-1;background:linear-gradient(transparent,var(--noir))}
+  @keyframes allumage{0%{opacity:0}30%{opacity:.6}38%{opacity:.25}100%{opacity:1}}
+  .scene-contenu{padding:110px 0 80px;max-width:900px}
+  .scene .monogramme{font-size:clamp(4.5rem,11vw,8rem);margin-bottom:18px;padding-right:.15em;display:inline-block}
+  h1{font-family:var(--display);font-weight:400;font-size:clamp(2.5rem,6.4vw,5.4rem);line-height:1.04;letter-spacing:-.015em}
+  .accroche{color:var(--ivoire-doux);font-size:clamp(1.05rem,1.6vw,1.25rem);max-width:36em;margin:28px auto 44px}
+  .actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+
+  /* ---------- Sections ---------- */
+  section{padding:120px 0}
+  h2{font-family:var(--display);font-weight:400;font-size:clamp(2rem,4.2vw,3.3rem);line-height:1.1;letter-spacing:-.01em;margin-bottom:20px}
+  .intro{color:var(--ivoire-doux);max-width:38em;font-size:1.1rem}
+  .entete-section{margin-bottom:64px}
+
+  /* Formules : deux colonnes séparées par un filet doré */
+  .formules{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--filet)}
+  .formule{padding:48px 56px 48px 0}
+  .formule + .formule{padding:48px 0 48px 56px;border-left:1px solid var(--filet)}
+  .formule .public{color:var(--or);font-size:.95rem;font-weight:500;margin-bottom:10px}
+  .formule h3{font-family:var(--display);font-weight:400;font-size:2rem;line-height:1.15;margin-bottom:18px}
+  .formule p{color:var(--ivoire-doux);margin-bottom:26px;max-width:32em}
+  .formule ul{list-style:none;display:grid;gap:12px;margin-bottom:34px}
+  .formule li{padding-left:26px;position:relative}
+  .formule li::before{content:"";position:absolute;left:2px;top:.62em;width:7px;height:7px;background:var(--or);transform:rotate(45deg)}
+  .lien-or{color:var(--or-clair);text-decoration:none;border-bottom:1px solid var(--or);padding-bottom:2px;font-weight:500}
+  .lien-or:hover{color:var(--ivoire)}
+  @media (max-width:820px){
+    .formules{grid-template-columns:1fr}
+    .formule,.formule + .formule{padding:40px 0;border-left:0}
+    .formule + .formule{border-top:1px solid var(--filet)}
+  }
+
+  /* Déroulé : vraie séquence, donc numérotée */
+  .plateaux{background:var(--scene)}
+  .etapes{display:grid;grid-template-columns:repeat(3,1fr);gap:56px;counter-reset:etape}
+  .etape .chiffre{font-family:var(--display);font-size:5.5rem;line-height:.9;color:transparent;-webkit-text-stroke:1px var(--or);margin-bottom:22px}
+  .etape h3{font-family:var(--display);font-weight:500;font-size:1.5rem;margin-bottom:10px}
+  .etape p{color:var(--ivoire-doux)}
+  @media (max-width:820px){.etapes{grid-template-columns:1fr;gap:44px}}
+
+  /* Cadres photo (portrait vide ou photo cliquable) */
+  .cadre{position:relative;background:var(--scene);border:1px dashed var(--filet);display:grid;place-items:center;overflow:hidden;color:var(--ivoire-doux);font-size:.9rem}
+  .cadre img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  button.cadre{border:0;padding:0;cursor:zoom-in;font:inherit}
+  button.cadre img{transition:transform .5s ease,filter .5s ease;filter:saturate(.9)}
+  button.cadre:hover img{transform:scale(1.03);filter:saturate(1)}
+
+  /* Section pièce */
+  .piece{background:var(--scene)}
+  .piece-tete{display:grid;grid-template-columns:minmax(220px,340px) 1fr;gap:64px;align-items:center;margin-bottom:72px}
+  .affiche{width:100%;height:auto;box-shadow:0 30px 80px rgba(0,0,0,.6);cursor:zoom-in}
+  .piece .public{color:var(--or);font-weight:500;margin-bottom:8px}
+  .fiche{display:grid;gap:10px;margin:8px 0 28px;border-top:1px solid var(--filet);padding-top:20px}
+  .fiche div{display:grid;grid-template-columns:130px 1fr;gap:16px}
+  .fiche dt{color:var(--ivoire-doux)}
+  @media (max-width:820px){.piece-tete{grid-template-columns:1fr;gap:36px}.affiche{max-width:300px}.fiche div{grid-template-columns:110px 1fr}}
+
+  .galerie{display:grid;grid-template-columns:repeat(12,1fr);grid-auto-rows:150px;gap:12px}
+  .galerie .cadre{grid-column:span 4;grid-row:span 3}
+  .galerie .g1{grid-column:span 7}.galerie .g2{grid-column:span 5}
+  .g3 img{object-position:60% center}.g4 img{object-position:55% center}
+  .g5 img{object-position:center 40%}.g7 img{object-position:center 35%}.g8 img{object-position:65% center}
+  @media (max-width:820px){
+    .galerie{grid-template-columns:1fr 1fr;grid-auto-rows:140px}
+    .galerie .cadre{grid-column:span 1;grid-row:span 2}
+    .galerie .g1,.galerie .g2,.galerie .g3,.galerie .g8{grid-column:span 2}
+  }
+
+  .figure-portrait .credit{margin-top:20px;text-align:left}
+  @media (max-width:820px){.figure-portrait{max-width:280px}}
+  /* Clubs */
+  .club{display:flex;align-items:baseline;justify-content:space-between;gap:12px 40px;flex-wrap:wrap;border-top:1px solid var(--filet);padding-top:22px;margin-bottom:26px}
+  .club h3{font-family:var(--display);font-weight:400;font-size:clamp(1.6rem,3vw,2.2rem);line-height:1.15}
+  .club p{color:var(--ivoire-doux);max-width:32em}
+  .grille-fabrique{display:grid;grid-template-columns:repeat(12,1fr);gap:12px;margin-bottom:96px}
+  .grille-fabrique .portrait-34{grid-column:span 4;aspect-ratio:3/4}
+  .grille-fabrique .carre{grid-column:span 3;aspect-ratio:1}
+  .grille-fabrique .carre img{object-position:center 35%}
+  .grille-fabrique .portrait-34 img{object-position:center 25%}
+  @media (max-width:820px){
+    .grille-fabrique{grid-template-columns:1fr 1fr;margin-bottom:64px}
+    .grille-fabrique .portrait-34,.grille-fabrique .carre{grid-column:span 1;aspect-ratio:4/5}
+    .grille-fabrique .portrait-34:first-child{grid-column:span 2;aspect-ratio:4/3}
+  }
+
+  /* Mur de photos Goku : trois colonnes de même hauteur */
+  .mur{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;height:clamp(900px,90vw,1250px)}
+  .colonne{display:flex;flex-direction:column;gap:12px;min-height:0}
+  .colonne .cadre{flex:var(--r) 1 0;min-height:0}
+  @media (max-width:820px){
+    .mur{height:auto;grid-template-columns:1fr 1fr}
+    .colonne{display:contents}
+    .colonne .cadre{aspect-ratio:4/5}
+    .colonne:last-child .cadre:last-child{grid-column:span 2;aspect-ratio:4/3}
+  }
+  .credit{margin-top:16px;color:var(--ivoire-doux);font-size:.9rem;text-align:right}
+
+  /* Logos partenaires */
+  .logos{display:flex;align-items:center;justify-content:space-around;flex-wrap:wrap;gap:40px 56px;padding:8px 0 56px}
+  .logos img{width:auto;opacity:.78}
+  .l-montreux{height:62px}.l-lillarious{height:84px}.l-dooky{height:78px}
+  @media (max-width:640px){.l-montreux{height:44px}.l-lillarious{height:62px}.l-dooky{height:58px}}
+
+  /* Visionneuse */
+  dialog{margin:auto;border:0;padding:0;background:transparent;max-width:min(92vw,1400px);max-height:92vh;overflow:visible}
+  dialog::backdrop{background:rgba(0,0,0,.92)}
+  dialog img{max-width:min(92vw,1400px);max-height:88vh;width:auto;height:auto}
+  .fermer{position:absolute;top:-44px;right:0;background:none;border:0;color:var(--ivoire);font-size:2rem;line-height:1;cursor:pointer}
+
+  /* Références : comme un programme de salle */
+  .references{list-style:none;border-top:1px solid var(--filet)}
+  .references li{display:grid;grid-template-columns:1fr auto;align-items:baseline;gap:24px;padding:26px 0;border-bottom:1px solid var(--filet)}
+  .references .nom{font-family:var(--display);font-size:clamp(1.5rem,3vw,2.2rem);line-height:1.15}
+  .references .nom em{font-style:italic;color:var(--ivoire-doux);font-size:.7em}
+  .references .role{color:var(--or);text-align:right}
+  @media (max-width:640px){.references li{grid-template-columns:1fr;gap:6px}.references .role{text-align:left}}
+  .bio{display:grid;grid-template-columns:280px 1fr;gap:56px;align-items:center;margin-top:90px}
+  .portrait{aspect-ratio:4/5;width:100%;height:auto;object-fit:cover;outline:1px solid var(--filet);outline-offset:10px}
+  .bio p{color:var(--ivoire-doux);font-size:1.1rem;max-width:36em}
+  .bio p + p{margin-top:16px}
+  .bio .signature{font-family:var(--display);font-style:italic;color:var(--ivoire);font-size:1.4rem;margin-top:24px}
+  @media (max-width:820px){.bio{grid-template-columns:1fr;gap:32px}.portrait{max-width:280px}}
+
+  /* Contact */
+  .contact{background:var(--scene)}
+  .contact-grille{display:grid;grid-template-columns:5fr 7fr;gap:72px}
+  .contact-infos p{color:var(--ivoire-doux);margin-bottom:28px}
+  .contact-infos a{color:var(--or-clair)}
+  form{display:grid;grid-template-columns:1fr 1fr;gap:28px 32px}
+  .champ{display:flex;flex-direction:column;gap:8px}
+  .champ.large{grid-column:1/-1}
+  label{font-size:.95rem;color:var(--ivoire-doux)}
+  input,select,textarea{font:inherit;color:var(--ivoire);background:transparent;border:0;border-bottom:1px solid rgba(239,232,216,.25);padding:10px 0;border-radius:0;transition:border-color .2s}
+  select{appearance:none;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23c9a35a' fill='none' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat right 4px center}
+  select option{background:var(--scene);color:var(--ivoire)}
+  textarea{min-height:120px;resize:vertical}
+  input:focus,select:focus,textarea:focus{outline:none;border-bottom-color:var(--or)}
+  input::placeholder,textarea::placeholder{color:rgba(239,232,216,.32)}
+  .envoi{grid-column:1/-1;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+  .statut{color:var(--or-clair);font-size:.95rem}
+  @media (max-width:820px){.contact-grille{grid-template-columns:1fr;gap:48px}form{grid-template-columns:1fr}}
+
+  /* Pied de page */
+  footer{padding:56px 0;border-top:1px solid var(--filet);color:var(--ivoire-doux);font-size:.92rem}
+  .pied{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
+  .pied .monogramme{font-size:2.4rem;padding-right:.15em}
+  .pied nav{gap:24px}
+  .pied nav a{display:inline}
+
+  /* Logo officiel (signature) */
+  .logo-entete{height:54px;width:auto}
+  .logo-scene{width:min(440px,78vw);height:auto;margin:0 auto 28px}
+  .logo-pied{height:56px;width:auto}
+
+  @media (prefers-reduced-motion:reduce){.poursuite{animation:none;opacity:1}.scene-fond video{display:none}.scene-fond{background:#000 url("images/public-rires-poster.jpg") center 62%/cover}html{scroll-behavior:auto}}
+</style>
 </head>
-<body class="bg-zinc-950 text-zinc-50 font-sans antialiased">
+<body>
 
-    <!-- En-tête / Navigation -->
-    <header class="sticky top-0 z-50 bg-zinc-950/80 backdrop-blur-md border-b border-zinc-900">
-        <div class="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center">
-            <div class="font-bold text-lg md:text-xl tracking-wider text-amber-500">JUSTINE PAOLINI</div>
-            <nav class="space-x-4 md:space-x-6 text-sm font-medium text-zinc-400">
-                <a href="#offres" class="hover:text-zinc-50 transition hidden sm:inline">Offres Premium</a>
-                <a href="#parcours" class="hover:text-zinc-50 transition">Parcours</a>
-                <a href="#contact" class="bg-amber-500 text-zinc-950 px-4 py-2 rounded-full font-bold hover:bg-amber-400 transition text-xs md:text-sm">Demander un Devis</a>
-            </nav>
+<header id="entete">
+  <div class="conteneur barre">
+    <a href="#" class="marque" aria-label="Paolini Productions, retour en haut">
+      <img src="images/logo-or.png" alt="Paolini Productions" class="logo-entete">
+    </a>
+    <nav aria-label="Navigation principale">
+      <a href="#formules">Formules</a>
+      <a href="#plateaux">Plateaux</a>
+      <a href="#deroule">Comment ça marche</a>
+      <a href="#references">Références</a>
+      <a href="#contact" class="bouton bouton-or">Demander un devis</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="scene" aria-labelledby="titre">
+    <div class="scene-fond">
+      <video src="videos/public-rires.mp4" poster="images/public-rires-poster.jpg" autoplay muted loop playsinline aria-hidden="true"></video>
+    </div>
+    <div class="poursuite" aria-hidden="true"></div>
+    <div class="conteneur scene-contenu">
+      <img src="images/logo-or.png" alt="Paolini Productions" class="logo-scene">
+      <h1 id="titre">Une soirée stand-up,<br>montée sur mesure.</h1>
+      <p class="accroche">Paolini Productions programme et produit des plateaux d'humoristes pour vos galas, séminaires et événements privés. Vous choisissez la date, on s'occupe du reste.</p>
+      <div class="actions">
+        <a href="#contact" class="bouton bouton-or">Demander un devis</a>
+        <a href="#formules" class="bouton bouton-ligne">Voir les formules</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FORMULES -->
+  <section id="formules">
+    <div class="conteneur">
+      <div class="entete-section">
+        <h2>Deux formats, un même niveau d'exigence</h2>
+        <p class="intro">Chaque plateau est construit pour votre public : choix des artistes, ton, durée et déroulé de la soirée.</p>
+      </div>
+      <div class="formules">
+        <article class="formule">
+          <p class="public">Entreprises, CSE, agences</p>
+          <h3>Galas, séminaires et soirées d'entreprise</h3>
+          <p>Un temps fort pour vos équipes ou vos clients, calé sur votre programme et votre lieu.</p>
+          <ul>
+            <li>Programmation d'humoristes professionnels</li>
+            <li>Maître ou maîtresse de cérémonie</li>
+            <li>Régie technique son et lumière</li>
+            <li>Contrats, déclarations et paiement des artistes</li>
+          </ul>
+          <a href="#contact" class="lien-or" data-type="Entreprise">Demander un devis entreprise</a>
+        </article>
+        <article class="formule">
+          <p class="public">Particuliers</p>
+          <h3>Anniversaires, mariages et réceptions</h3>
+          <p>Un comedy club éphémère chez vous ou dans le lieu de votre choix, le temps d'une soirée.</p>
+          <ul>
+            <li>Plateau intimiste, adapté à vos invités</li>
+            <li>Ton et sujets validés avec vous en amont</li>
+            <li>Installation et accueil des artistes</li>
+            <li>Un seul interlocuteur du premier appel au salut final</li>
+          </ul>
+          <a href="#contact" class="lien-or" data-type="Privé">Demander un devis particulier</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLATEAUX : GOKU COMEDY CLUB -->
+  <section id="plateaux" class="plateaux">
+    <div class="conteneur">
+      <div class="entete-section">
+        <h2>Mes plateaux</h2>
+        <p class="intro">Des scènes stand-up que j'ai portées à Paris. C'est ce type de soirée que je monte pour vous, adaptée à votre lieu et à votre public.</p>
+      </div>
+
+      <div class="club">
+        <h3>La Fabrique Comedy</h3>
+        <p>La scène stand-up que j'ai créée et qui s'est tenue chaque samedi à la Taverne de l'Olympia, Paris 9e.</p>
+      </div>
+      <div class="grille-fabrique">
+        <button class="cadre portrait-34" data-zoom><img src="images/fabrique-ecran.jpg" alt="Humoriste au micro devant l'écran La Fabrique Comedy"></button>
+        <button class="cadre portrait-34" data-zoom><img src="images/fabrique-veste-jean.jpg" alt="Humoriste en veste en jean dans la poursuite"></button>
+        <button class="cadre portrait-34" data-zoom><img src="images/fabrique-tshirt-noir.jpg" alt="Humoriste souriant au micro, le public au premier plan"></button>
+        <button class="cadre carre" data-zoom><img src="images/fabrique-chemise-blanche.jpg" alt="Humoriste en chemise blanche face au public"></button>
+        <button class="cadre carre" data-zoom><img src="images/fabrique-humoriste.jpg" alt="Humoriste en plein rire devant l'affiche La Fabrique"></button>
+        <button class="cadre carre" data-zoom><img src="images/fabrique-boucles.jpg" alt="Humoriste au regard en coin sous la lumière violette"></button>
+        <button class="cadre carre" data-zoom><img src="images/fabrique-adidas.jpg" alt="Humoriste au pied de micro, une spectatrice rit au premier plan"></button>
+      </div>
+
+      <div class="club">
+        <h3>Le Goku Comedy Club</h3>
+        <p>Un plateau d'humoristes que j'ai programmé et produit.</p>
+      </div>
+      <div class="mur">
+        <div class="colonne">
+          <button class="cadre" data-zoom style="--r:2.17"><img src="images/goku-salle.jpg" alt="Un humoriste sur scène au Goku Comedy Club, le public au premier plan"></button>
+          <button class="cadre" data-zoom style="--r:1.08"><img src="images/goku-teddy.jpg" alt="Humoriste en blouson rouge au micro"></button>
+          <button class="cadre" data-zoom style="--r:1"><img src="images/goku-veste.jpg" alt="Humoriste en veste sombre au micro"></button>
         </div>
-    </header>
-
-    <!-- Section d'accueil (Hero) -->
-    <section class="max-w-4xl mx-auto px-4 py-16 md:py-24 text-center">
-        <span class="text-amber-400 font-semibold tracking-widest text-xs uppercase bg-amber-400/10 px-4 py-1.5 rounded-full border border-amber-400/20">
-            12 ans d'expertise dans l'humour
-        </span>
-        <h1 class="text-4xl md:text-6xl font-black tracking-tight mt-6 mb-6 leading-tight">
-            Des plateaux de <span class="text-amber-500">Stand-up Premium</span> <br>pour vos événements.
-        </h1>
-        <p class="text-zinc-400 text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
-            Directrice de production, metteure en scène et auteure. Je conçois et programme des événements humour haut de gamme, sur mesure et clés en main.
-        </p>
-        <div class="flex flex-col sm:flex-row justify-center gap-4">
-            <a href="#contact" class="bg-zinc-50 text-zinc-950 px-8 py-4 rounded-xl font-bold text-lg hover:bg-zinc-200 transition shadow-lg shadow-amber-500/5">
-                ⚡ Obtenir un devis immédiat
-            </a>
-            <a href="#parcours" class="border border-zinc-800 text-zinc-300 px-8 py-4 rounded-xl font-bold text-lg hover:bg-zinc-900 transition">
-                Découvrir mes références
-            </a>
+        <div class="colonne">
+          <button class="cadre" data-zoom style="--r:1.33"><img src="images/goku-assise.jpg" alt="Humoriste assise au micro sous le néon Goku Comedy"></button>
+          <button class="cadre" data-zoom style="--r:1"><img src="images/goku-salopette.jpg" alt="Humoriste en combinaison en jean, en plein rire"></button>
+          <button class="cadre" data-zoom style="--r:1.33"><img src="images/goku-micro.jpg" alt="Humoriste au pied de micro face au public"></button>
         </div>
-    </section>
-
-    <!-- Section Offres Premium -->
-    <section id="offres" class="max-w-5xl mx-auto px-4 py-16 border-t border-zinc-900">
-        <div class="text-center max-w-2xl mx-auto mb-12">
-            <h2 class="text-2xl md:text-3xl font-bold mb-3">L'Excellence du Stand-up sur mesure</h2>
-            <p class="text-zinc-400 text-sm md:text-base">
-                Pas de catalogue générique. Je sélectionne des artistes professionnels confirmés et j'adapte la direction artistique à votre public.
-            </p>
+        <div class="colonne">
+          <button class="cadre" data-zoom style="--r:1.25"><img src="images/goku-tshirt-rouge.jpg" alt="Humoriste en t-shirt rouge, main levée"></button>
+          <button class="cadre" data-zoom style="--r:2.09"><img src="images/goku-trio.jpg" alt="Trois artistes réunis sur scène en fin de soirée"></button>
+          <button class="cadre" data-zoom style="--r:1.08"><img src="images/goku-sweat.jpg" alt="Humoriste en sweat gris au micro"></button>
         </div>
-        
-        <div class="grid md:grid-cols-2 gap-8">
-            <!-- Carte Entreprises -->
-            <div class="bg-zinc-900 p-8 rounded-2xl border border-zinc-800 hover:border-amber-500/30 transition relative overflow-hidden group">
-                <div class="absolute top-0 right-0 bg-amber-500 text-zinc-950 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-bl-lg">Corporate</div>
-                <div class="text-3xl mb-4">🏢</div>
-                <h3 class="text-xl font-bold mb-3">Entreprises & Séminaires</h3>
-                <p class="text-zinc-400 text-sm leading-relaxed">
-                    Marquez les esprits lors de vos soirées de gala, séminaires ou lancements de produit. Un accompagnement de A à Z : programmation sur mesure, régie technique et conformité administrative.
-                </p>
-            </div>
-            <!-- Carte Particuliers -->
-            <div class="bg-zinc-900 p-8 rounded-2xl border border-zinc-800 hover:border-amber-500/30 transition relative overflow-hidden group">
-                <div class="absolute top-0 right-0 bg-zinc-800 text-zinc-400 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-bl-lg">Privé</div>
-                <div class="text-3xl mb-4">✨</div>
-                <h3 class="text-xl font-bold mb-3">Événements Privés d'Exception</h3>
-                <p class="text-zinc-400 text-sm leading-relaxed">
-                    Anniversaires, mariages ou réceptions privées. Offrez-vous un véritable Comedy Club éphémère et intimiste. Une sélection d'humoristes premium pour une expérience mémorable.
-                </p>
-            </div>
+      </div>
+      <p class="credit">Photos : Vincent Tomato</p>
+    </div>
+  </section>
+
+  <!-- DÉROULÉ -->
+  <section id="deroule" class="deroule">
+    <div class="conteneur">
+      <div class="entete-section">
+        <h2>Comment ça se passe</h2>
+      </div>
+      <div class="etapes">
+        <div class="etape">
+          <div class="chiffre" aria-hidden="true">1</div>
+          <h3>Le brief</h3>
+          <p>Vous me parlez de l'événement, du public et du lieu. Je vous envoie un devis sous 24 h.</p>
         </div>
-    </section>
-
-    <!-- Section Parcours / Crédibilité -->
-    <section id="parcours" class="bg-zinc-900/40 py-16 border-t border-b border-zinc-900">
-        <div class="max-w-5xl mx-auto px-4">
-            <h2 class="text-zinc-400 uppercase tracking-widest text-center text-xs font-bold mb-12">Références & Expertises</h2>
-            
-            <!-- Grille des grands festivals/projets -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center mb-12">
-                <div class="p-6 bg-zinc-900/50 rounded-xl border border-zinc-900">
-                    <div class="text-xs text-amber-500 font-mono mb-2">COORDINATION ARTISTIQUE</div>
-                    <div class="font-bold text-lg text-zinc-200">Montreux Comedy</div>
-                </div>
-                <div class="p-6 bg-zinc-900/50 rounded-xl border border-zinc-900">
-                    <div class="text-xs text-amber-500 font-mono mb-2">COORDINATION ARTISTIQUE</div>
-                    <div class="font-bold text-lg text-zinc-200">Lillarious</div>
-                </div>
-                <div class="p-6 bg-zinc-900/50 rounded-xl border border-zinc-900">
-                    <div class="text-xs text-amber-500 font-mono mb-2">ADMINISTRATION DE PRODUCTION</div>
-                    <div class="font-bold text-lg text-zinc-200">Lazerstorm Productions</div>
-                </div>
-            </div>
-
-            <!-- Focus Théâtre / Écriture -->
-            <div class="max-w-3xl mx-auto bg-zinc-900 p-6 md:p-8 rounded-2xl border border-zinc-800">
-                <div class="flex items-center gap-4 mb-4">
-                    <span class="text-2xl">🎭</span>
-                    <div>
-                        <h4 class="font-bold text-zinc-100">Directrice de Production & Metteure en scène</h4>
-                        <p class="text-xs text-zinc-500">Goupil Productions — Pièce "Du Couscous à l'Élysée"</p>
-                    </div>
-                </div>
-                <p class="text-zinc-400 text-sm leading-relaxed">
-                    Auteure pour de nombreux humoristes depuis 12 ans, je maîtrise toutes les facettes du spectacle vivant. Cette double casquette artistique et administrative me permet de vous garantir des plateaux d'une qualité technique et humoristique irréprochable.
-                </p>
-            </div>
+        <div class="etape">
+          <div class="chiffre" aria-hidden="true">2</div>
+          <h3>La programmation</h3>
+          <p>Je vous propose une affiche d'humoristes et un déroulé. On ajuste ensemble jusqu'à validation.</p>
         </div>
-    </section>
-
-    <!-- Section Contact & Devis Immédiat -->
-    <section id="contact" class="max-w-2xl mx-auto px-4 py-20">
-        <div class="text-center mb-10">
-            <h2 class="text-3xl font-bold mb-3">Votre devis sur mesure en 24h</h2>
-            <p class="text-zinc-400 text-sm">Remplissez ce formulaire rapide pour bloquer une date ou obtenir une estimation tarifaire.</p>
+        <div class="etape">
+          <div class="chiffre" aria-hidden="true">3</div>
+          <h3>Le soir J</h3>
+          <p>Artistes, technique et timing : je pilote tout sur place. Vous profitez du spectacle.</p>
         </div>
-        
-        <!-- Formulaire optimisé conversion -->
-        <form class="space-y-5 bg-zinc-900 p-6 md:p-8 rounded-2xl border border-zinc-800">
-            <div class="grid md:grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2">Nom & Prénom / Entreprise</label>
-                    <input type="text" required class="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-3 text-zinc-100 focus:outline-none focus:border-amber-500 transition text-sm" placeholder="Ex: Justine Paolini">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2">Adresse Email</label>
-                    <input type="email" required class="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-3 text-zinc-100 focus:outline-none focus:border-amber-500 transition text-sm" placeholder="contact@exemple.com">
-                </div>
-            </div>
+      </div>
+    </div>
+  </section>
 
-            <div class="grid md:grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2">Type d'événement</label>
-                    <select class="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-3 text-zinc-400 focus:outline-none focus:border-amber-500 transition text-sm">
-                        <option>Entreprise (Séminaire, Gala, CSE)</option>
-                        <option>Événement privé (Anniversaire, Mariage)</option>
-                        <option>Autre projet de production</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2">Date & Lieu envisagés</label>
-                    <input type="text" class="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-3 text-zinc-100 focus:outline-none focus:border-amber-500 transition text-sm" placeholder="Ex: 15 Décembre à Paris">
-                </div>
-            </div>
+  <!-- MISE EN SCÈNE : DU COUSCOUS À L'ÉLYSÉE -->
+  <section id="couscous" class="piece">
+    <div class="conteneur">
+      <div class="piece-tete">
+        <img src="images/couscous-affiche.jpg" alt="Affiche de Du Couscous à l'Élysée au Théâtre Edgar" class="affiche" data-zoom>
+        <div>
+          <p class="public">Mise en scène</p>
+          <h2>Du Couscous à l'Élysée</h2>
+          <dl class="fiche">
+            <div><dt>Théâtre</dt><dd>Théâtre Edgar, Paris 14e</dd></div>
+            <div><dt>Production</dt><dd>Goupil Production</dd></div>
+            <div><dt>Texte</dt><dd>Gabriel Francès, Sam Namane et Romuald Maufras</dd></div>
+            <div><dt>Mise en scène</dt><dd>Justine Paolini</dd></div>
+          </dl>
+          <p class="intro">Une comédie programmée au Théâtre Edgar, à Paris. Direction d'acteurs, rythme et production : le même travail que je mets au service de vos soirées.</p>
+        </div>
+      </div>
 
-            <div>
-                <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-2">Détails de votre projet & Budget estimé</label>
+      <div class="galerie">
+        <button class="cadre g1" data-zoom><img src="images/couscous-telephone.jpg" alt="La comédienne éclate de rire au téléphone"></button>
+        <button class="cadre g2" data-zoom><img src="images/couscous-rouge.jpg" alt="Scène sous lumière rouge"></button>
+        <button class="cadre g3" data-zoom><img src="images/couscous-barbe.jpg" alt="La comédienne tire la barbe de son partenaire"></button>
+        <button class="cadre g4" data-zoom><img src="images/couscous-duo.jpg" alt="Le duo face au public"></button>
+        <button class="cadre g5" data-zoom><img src="images/couscous-pupitre.jpg" alt="Le comédien au pupitre, bras ouverts"></button>
+        <button class="cadre g6" data-zoom><img src="images/couscous-star-wars.jpg" alt="Les deux comédiens sur scène"></button>
+        <button class="cadre g7" data-zoom><img src="images/couscous-casque.jpg" alt="Le comédien avec un casque micro"></button>
+        <button class="cadre g8" data-zoom><img src="images/couscous-salut.jpg" alt="Le comédien salue le public"></button>
+      </div>
+      <p class="credit">Photos : Kobayashi</p>
+    </div>
+  </section>
 
+  <dialog id="visionneuse" aria-label="Photo agrandie">
+    <img alt="">
+    <button class="fermer" aria-label="Fermer">×</button>
+  </dialog>
 
+  <!-- RÉFÉRENCES -->
+  <section id="references">
+    <div class="conteneur">
+      <div class="entete-section">
+        <h2>Références</h2>
+        <p class="intro">Festivals, productions et théâtre : les projets sur lesquels j'ai travaillé.</p>
+      </div>
+      <div class="logos">
+        <img src="images/logo-montreux.png" alt="Montreux Comedy" class="l-montreux">
+        <img src="images/logo-lillarious.png" alt="Lillarious" class="l-lillarious">
+        <img src="images/logo-dooky.png" alt="Dooky Passion Rétro" class="l-dooky">
+      </div>
+      <ul class="references">
+        <li><span class="nom">Montreux Comedy</span><span class="role">Coordination artistique</span></li>
+        <li><span class="nom">Lillarious</span><span class="role">Coordination artistique</span></li>
+        <li><span class="nom">La Fabrique Comedy</span><span class="role">Création et production</span></li>
+        <li><span class="nom">Dooky Passion Rétro</span><span class="role">Chargée de production</span></li>
+        <li><span class="nom">Lazerstorm Productions</span><span class="role">Administration de production</span></li>
+        <li><span class="nom">Du Couscous à l'Élysée <em>Goupil Production</em></span><span class="role">Direction de production et mise en scène</span></li>
+      </ul>
+
+      <div class="bio">
+        <figure class="figure-portrait">
+          <img src="images/justine-paolini.jpg" alt="Portrait de Justine Paolini" class="portrait">
+          <figcaption class="credit">Photo : Brigitte Lacombe</figcaption>
+        </figure>
+        <div>
+          <p>Productrice, metteuse en scène et autrice pour humoristes, je travaille dans l'humour depuis plus de dix ans, des comedy clubs aux festivals.</p>
+          <p>Cette double casquette artistique et administrative me permet de vous garantir un plateau solide sur scène comme en coulisses.</p>
+          <p class="signature">Justine Paolini, fondatrice</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="contact">
+    <div class="conteneur contact-grille">
+      <div class="contact-infos">
+        <h2>Parlons de votre soirée</h2>
+        <p>Quelques infos suffisent pour un premier devis. Réponse sous 24 h.</p>
+        <p>Vous préférez écrire directement ?<br><a href="mailto:paolini.comedy@gmail.com">paolini.comedy@gmail.com</a></p>
+      </div>
+      <form id="formulaire" novalidate>
+        <div class="champ">
+          <label for="nom">Nom ou entreprise</label>
+          <input id="nom" name="nom" type="text" required autocomplete="name" placeholder="Camille Martin, Société X">
+        </div>
+        <div class="champ">
+          <label for="email">E-mail</label>
+          <input id="email" name="email" type="email" required autocomplete="email" placeholder="vous@exemple.fr">
+        </div>
+        <div class="champ">
+          <label for="type">Type d'événement</label>
+          <select id="type" name="type">
+            <option value="Entreprise">Entreprise (gala, séminaire, CSE)</option>
+            <option value="Privé">Événement privé (anniversaire, mariage)</option>
+            <option value="Autre">Autre projet</option>
+          </select>
+        </div>
+        <div class="champ">
+          <label for="quand">Date et lieu</label>
+          <input id="quand" name="quand" type="text" placeholder="12 décembre, Paris 8e">
+        </div>
+        <div class="champ large">
+          <label for="details">Votre projet</label>
+          <textarea id="details" name="details" placeholder="Nombre d'invités, ambiance souhaitée, budget envisagé…"></textarea>
+        </div>
+        <div class="envoi">
+          <button type="submit" class="bouton bouton-or">Envoyer ma demande</button>
+          <span class="statut" id="statut" role="status"></span>
+        </div>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="conteneur pied">
+    <img src="images/logo-or.png" alt="Paolini Productions" class="logo-pied">
+    <span>©<span id="annee"></span> Paolini Productions</span>
+    <nav aria-label="Liens du pied de page">
+      <a href="mailto:paolini.comedy@gmail.com">E-mail</a>
+      <a href="#">Instagram</a>
+      <a href="#">Mentions légales</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+  // En-tête qui devient opaque au défilement
+  const entete = document.getElementById('entete');
+  const majEntete = () => entete.classList.toggle('opaque', window.scrollY > 40);
+  window.addEventListener('scroll', majEntete, {passive:true}); majEntete();
+
+  document.getElementById('annee').textContent = new Date().getFullYear();
+
+  // Les liens "devis entreprise / particulier" pré-remplissent le type d'événement
+  document.querySelectorAll('[data-type]').forEach(lien => {
+    lien.addEventListener('click', () => { document.getElementById('type').value = lien.dataset.type; });
+  });
+
+  // Visionneuse photo
+  const vis = document.getElementById('visionneuse');
+  const visImg = vis.querySelector('img');
+  document.querySelectorAll('[data-zoom]').forEach(el => {
+    el.addEventListener('click', () => {
+      const src = el.tagName === 'IMG' ? el : el.querySelector('img');
+      visImg.src = src.src; visImg.alt = src.alt; vis.showModal();
+    });
+  });
+  vis.querySelector('.fermer').addEventListener('click', () => vis.close());
+  vis.addEventListener('click', e => { if (e.target === vis) vis.close(); });
+
+  // Formulaire : ouvre la messagerie avec la demande pré-remplie
+  const form = document.getElementById('formulaire');
+  const statut = document.getElementById('statut');
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const nom = form.nom.value.trim(), email = form.email.value.trim();
+    if (!nom || !email || !form.email.checkValidity()) {
+      statut.textContent = 'Indiquez votre nom et une adresse e-mail valide.';
+      (!nom ? form.nom : form.email).focus();
+      return;
+    }
+    const sujet = `Demande de devis – ${form.type.value} – ${nom}`;
+    const corps = `Nom / entreprise : ${nom}\nE-mail : ${email}\nType d'événement : ${form.type.value}\nDate et lieu : ${form.quand.value}\n\n${form.details.value}`;
+    window.location.href = `mailto:paolini.comedy@gmail.com?subject=${encodeURIComponent(sujet)}&body=${encodeURIComponent(corps)}`;
+    statut.textContent = 'Votre messagerie s’ouvre avec la demande pré-remplie.';
+  });
+</script>
+</body>
+</html>
