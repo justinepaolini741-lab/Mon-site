@@ -115,7 +115,8 @@
   button.cadre:hover img{transform:scale(1.03);filter:saturate(1)}
 
   /* Section pièce */
-  .piece{background:var(--scene)}
+  .piece{background:var(--noir)}
+  #references{background:var(--scene)}
   .piece-tete{display:grid;grid-template-columns:minmax(220px,340px) 1fr;gap:64px;align-items:center;margin-bottom:72px}
   .affiche{width:100%;height:auto;box-shadow:0 30px 80px rgba(0,0,0,.6);cursor:zoom-in}
   .piece .public{color:var(--or);font-weight:500;margin-bottom:8px}
@@ -209,7 +210,7 @@
   select{appearance:none;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23c9a35a' fill='none' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat right 4px center}
   select option{background:var(--scene);color:var(--ivoire)}
   textarea{min-height:120px;resize:vertical}
-  .avis{border-top:1px solid var(--filet)}
+  .avis{background:var(--noir)}
   .accord{grid-column:1/-1;display:flex;gap:14px;align-items:flex-start;cursor:pointer;color:var(--ivoire-doux);font-size:.95rem}
   .accord input{appearance:none;flex:none;width:20px;height:20px;margin-top:3px;padding:0;border:1px solid var(--or);background:transparent;cursor:pointer;display:grid;place-items:center}
   .accord input:checked{background:var(--or)}
@@ -388,6 +389,46 @@
     </div>
   </section>
 
+  <!-- CONTACT -->
+  <section id="contact" class="contact">
+    <div class="conteneur contact-grille">
+      <div class="contact-infos">
+        <h2>Parlons de votre soirée</h2>
+        <p>Quelques infos suffisent pour un premier devis. Réponse sous 24 h.</p>
+        <p>Vous préférez écrire directement ?<br><a href="mailto:paolini.comedy@gmail.com">paolini.comedy@gmail.com</a></p>
+      </div>
+      <form id="formulaire" novalidate>
+        <div class="champ">
+          <label for="nom">Nom ou entreprise</label>
+          <input id="nom" name="nom" type="text" required autocomplete="name" placeholder="Camille Martin, Société X">
+        </div>
+        <div class="champ">
+          <label for="email">E-mail</label>
+          <input id="email" name="email" type="email" required autocomplete="email" placeholder="vous@exemple.fr">
+        </div>
+        <div class="champ">
+          <label for="type">Type d'événement</label>
+          <select id="type" name="type">
+            <option value="Entreprise">Entreprise (gala, séminaire, CSE)</option>
+            <option value="Privé">Événement privé (anniversaire, mariage)</option>
+            <option value="Autre">Autre projet</option>
+          </select>
+        </div>
+        <div class="champ">
+          <label for="quand">Date et lieu</label>
+          <input id="quand" name="quand" type="text" placeholder="12 décembre, Paris 8e (ou « lieu à trouver »)">
+        </div>
+        <div class="champ large">
+          <label for="details">Votre projet</label>
+          <textarea id="details" name="details" placeholder="Nombre d'invités, ambiance souhaitée, budget envisagé…"></textarea>
+        </div>
+        <div class="envoi">
+          <button type="submit" class="bouton bouton-or">Envoyer ma demande</button>
+          <span class="statut" id="statut" role="status"></span>
+        </div>
+      </form>
+    </div>
+  </section>
   <!-- MISE EN SCÈNE : DU COUSCOUS À L'ÉLYSÉE -->
   <section id="couscous" class="piece">
     <div class="conteneur">
@@ -497,46 +538,6 @@
     </div>
   </section>
 
-  <!-- CONTACT -->
-  <section id="contact" class="contact">
-    <div class="conteneur contact-grille">
-      <div class="contact-infos">
-        <h2>Parlons de votre soirée</h2>
-        <p>Quelques infos suffisent pour un premier devis. Réponse sous 24 h.</p>
-        <p>Vous préférez écrire directement ?<br><a href="mailto:paolini.comedy@gmail.com">paolini.comedy@gmail.com</a></p>
-      </div>
-      <form id="formulaire" novalidate>
-        <div class="champ">
-          <label for="nom">Nom ou entreprise</label>
-          <input id="nom" name="nom" type="text" required autocomplete="name" placeholder="Camille Martin, Société X">
-        </div>
-        <div class="champ">
-          <label for="email">E-mail</label>
-          <input id="email" name="email" type="email" required autocomplete="email" placeholder="vous@exemple.fr">
-        </div>
-        <div class="champ">
-          <label for="type">Type d'événement</label>
-          <select id="type" name="type">
-            <option value="Entreprise">Entreprise (gala, séminaire, CSE)</option>
-            <option value="Privé">Événement privé (anniversaire, mariage)</option>
-            <option value="Autre">Autre projet</option>
-          </select>
-        </div>
-        <div class="champ">
-          <label for="quand">Date et lieu</label>
-          <input id="quand" name="quand" type="text" placeholder="12 décembre, Paris 8e (ou « lieu à trouver »)">
-        </div>
-        <div class="champ large">
-          <label for="details">Votre projet</label>
-          <textarea id="details" name="details" placeholder="Nombre d'invités, ambiance souhaitée, budget envisagé…"></textarea>
-        </div>
-        <div class="envoi">
-          <button type="submit" class="bouton bouton-or">Envoyer ma demande</button>
-          <span class="statut" id="statut" role="status"></span>
-        </div>
-      </form>
-    </div>
-  </section>
 </main>
 
 <footer>
