@@ -137,6 +137,12 @@
 
   .figure-portrait .credit{margin-top:20px;text-align:left}
   @media (max-width:820px){.figure-portrait{max-width:280px}}
+  /* Encart lieux */
+  .lieux{display:grid;grid-template-columns:minmax(220px,1fr) 2fr;gap:24px 56px;align-items:start;margin-top:56px;padding:40px 44px;border:1px solid var(--filet);background:linear-gradient(135deg,rgba(201,163,90,.09),transparent 60%)}
+  .lieux h3{font-family:var(--display);font-weight:400;font-size:clamp(1.6rem,3vw,2.1rem);line-height:1.15}
+  .lieux p{color:var(--ivoire-doux);margin-bottom:22px;max-width:36em}
+  @media (max-width:820px){.lieux{grid-template-columns:1fr;padding:32px 24px;margin-top:40px}}
+
   /* Clubs */
   .club{display:flex;align-items:baseline;justify-content:space-between;gap:12px 40px;flex-wrap:wrap;border-top:1px solid var(--filet);padding-top:22px;margin-bottom:26px}
   .club h3{font-family:var(--display);font-weight:400;font-size:clamp(1.6rem,3vw,2.2rem);line-height:1.15}
@@ -292,6 +298,14 @@
           <a href="#contact" class="lien-or" data-type="Privé">Demander un devis particulier</a>
         </article>
       </div>
+
+      <aside class="lieux">
+        <h3>Pas encore de salle ?</h3>
+        <div>
+          <p>Je travaille avec un carnet de lieux partenaires. Donnez-moi votre date, votre nombre d'invités et votre budget : je vous propose les salles qui correspondent.</p>
+          <a href="#contact" class="lien-or" data-lieu>Trouver un lieu avec moi</a>
+        </div>
+      </aside>
     </div>
   </section>
 
@@ -352,7 +366,7 @@
         <div class="etape">
           <div class="chiffre" aria-hidden="true">1</div>
           <h3>Le brief</h3>
-          <p>Vous me parlez de l'événement, du public et du lieu. Je vous envoie un devis sous 24 h.</p>
+          <p>Vous me parlez de l'événement et du public. Pas encore de lieu ? Je vous en propose. Devis sous 24 h.</p>
         </div>
         <div class="etape">
           <div class="chiffre" aria-hidden="true">2</div>
@@ -467,7 +481,7 @@
         </div>
         <div class="champ">
           <label for="quand">Date et lieu</label>
-          <input id="quand" name="quand" type="text" placeholder="12 décembre, Paris 8e">
+          <input id="quand" name="quand" type="text" placeholder="12 décembre, Paris 8e (ou « lieu à trouver »)">
         </div>
         <div class="champ large">
           <label for="details">Votre projet</label>
@@ -505,6 +519,12 @@
   // Les liens "devis entreprise / particulier" pré-remplissent le type d'événement
   document.querySelectorAll('[data-type]').forEach(lien => {
     lien.addEventListener('click', () => { document.getElementById('type').value = lien.dataset.type; });
+  });
+
+  // Lien "Trouver un lieu" : pré-remplit le champ date et lieu
+  document.querySelector('[data-lieu]').addEventListener('click', () => {
+    const q = document.getElementById('quand');
+    if (!q.value) q.value = 'Lieu à trouver';
   });
 
   // Visionneuse photo
