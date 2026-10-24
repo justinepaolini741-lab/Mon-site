@@ -209,6 +209,12 @@
   select{appearance:none;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23c9a35a' fill='none' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat right 4px center}
   select option{background:var(--scene);color:var(--ivoire)}
   textarea{min-height:120px;resize:vertical}
+  .avis{border-top:1px solid var(--filet)}
+  .accord{grid-column:1/-1;display:flex;gap:14px;align-items:flex-start;cursor:pointer;color:var(--ivoire-doux);font-size:.95rem}
+  .accord input{appearance:none;flex:none;width:20px;height:20px;margin-top:3px;padding:0;border:1px solid var(--or);background:transparent;cursor:pointer;display:grid;place-items:center}
+  .accord input:checked{background:var(--or)}
+  .accord input:checked::after{content:"";width:6px;height:11px;border:solid var(--noir);border-width:0 2px 2px 0;transform:translateY(-1px) rotate(45deg)}
+  .accord input:focus-visible{outline:2px solid var(--or-clair);outline-offset:3px}
   input:focus,select:focus,textarea:focus{outline:none;border-bottom-color:var(--or)}
   input::placeholder,textarea::placeholder{color:rgba(239,232,216,.32)}
   .envoi{grid-column:1/-1;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
@@ -300,7 +306,7 @@
       </div>
 
       <aside class="lieux">
-        <h3>Pas encore de salle ?</h3>
+        <h3>Pas encore de salle&nbsp;?</h3>
         <div>
           <p>Je travaille avec un carnet de lieux partenaires. Donnez-moi votre date, votre nombre d'invités et votre budget : je vous propose les salles qui correspondent.</p>
           <a href="#contact" class="lien-or" data-lieu>Trouver un lieu avec moi</a>
@@ -454,6 +460,43 @@
     </div>
   </section>
 
+  <!-- AVIS -->
+  <section id="avis" class="avis">
+    <div class="conteneur contact-grille">
+      <div class="contact-infos">
+        <h2>On a travaillé ensemble&nbsp;?</h2>
+        <p>Client, salle, festival ou artiste : votre retour m'aide à progresser et rassure les prochains clients. Deux lignes suffisent.</p>
+        <p>Votre avis m'arrive par e-mail. Il n'est publié sur le site qu'avec votre accord.</p>
+      </div>
+      <form id="form-avis" novalidate>
+        <div class="champ">
+          <label for="avis-nom">Votre nom</label>
+          <input id="avis-nom" name="nom" type="text" required autocomplete="name" placeholder="Camille Martin">
+        </div>
+        <div class="champ">
+          <label for="avis-role">Fonction ou structure</label>
+          <input id="avis-role" name="role" type="text" placeholder="Responsable CSE, Société X">
+        </div>
+        <div class="champ large">
+          <label for="avis-evenement">L'événement</label>
+          <input id="avis-evenement" name="evenement" type="text" placeholder="Soirée d'entreprise, décembre 2025">
+        </div>
+        <div class="champ large">
+          <label for="avis-texte">Votre avis</label>
+          <textarea id="avis-texte" name="texte" required placeholder="Ce qui vous a plu, ce que vos invités en ont dit…"></textarea>
+        </div>
+        <label class="accord large">
+          <input type="checkbox" name="accord">
+          <span>J'accepte que mon avis soit publié sur ce site, avec mon nom et ma fonction.</span>
+        </label>
+        <div class="envoi">
+          <button type="submit" class="bouton bouton-ligne">Envoyer mon avis</button>
+          <span class="statut" id="statut-avis" role="status"></span>
+        </div>
+      </form>
+    </div>
+  </section>
+
   <!-- CONTACT -->
   <section id="contact" class="contact">
     <div class="conteneur contact-grille">
@@ -501,6 +544,7 @@
     <img src="images/logo-or.png" alt="Paolini Productions" class="logo-pied">
     <span>©<span id="annee"></span> Paolini Productions</span>
     <nav aria-label="Liens du pied de page">
+      <a href="#avis">Laisser un avis</a>
       <a href="mailto:paolini.comedy@gmail.com">E-mail</a>
       <a href="https://www.instagram.com/justinepaolini/" target="_blank" rel="noopener">Instagram</a>
       <a href="mentions-legales.html">Mentions légales</a>
@@ -519,6 +563,24 @@
   // Les liens "devis entreprise / particulier" pré-remplissent le type d'événement
   document.querySelectorAll('[data-type]').forEach(lien => {
     lien.addEventListener('click', () => { document.getElementById('type').value = lien.dataset.type; });
+  });
+
+  // Formulaire d'avis : ouvre la messagerie avec l'avis pré-rempli
+  const fa = document.getElementById('form-avis');
+  const sa = document.getElementById('statut-avis');
+  fa.addEventListener('submit', e => {
+    e.preventDefault();
+    const nom = fa.nom.value.trim(), texte = fa.texte.value.trim();
+    if (!nom || !texte) {
+      sa.textContent = 'Indiquez votre nom et votre avis.';
+      (!nom ? fa.nom : fa.texte).focus();
+      return;
+    }
+    const accord = fa.accord.checked ? 'Oui' : 'Non';
+    const sujet = `Avis – ${nom}`;
+    const corps = `Nom : ${nom}\nFonction / structure : ${fa.role.value}\nÉvénement : ${fa.evenement.value}\nAccord pour publication : ${accord}\n\n${texte}`;
+    window.location.href = `mailto:paolini.comedy@gmail.com?subject=${encodeURIComponent(sujet)}&body=${encodeURIComponent(corps)}`;
+    sa.textContent = 'Votre messagerie s’ouvre avec votre avis. Merci !';
   });
 
   // Lien "Trouver un lieu" : pré-remplit le champ date et lieu
